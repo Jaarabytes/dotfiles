@@ -48,7 +48,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # Define package lists
-apt_packages=(tree eza bat htop iftop iostat netstat make curl wget grep sed awk nvim git docker python3-pip)
+apt_packages=(ffmpeg tree eza bat htop iftop iostat netstat make curl wget grep sed awk nvim git docker python3-pip)
 npm_packages=(vercel@latest)
 snap_packages=(code obsidian slack telegram-desktop discord spotify)
 
