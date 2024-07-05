@@ -40,12 +40,13 @@ require('packer').startup(function(use)
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use 'jiangmiao/auto-pairs'
+  use 'nvim-tree/nvim-web-devicons'
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use 'EdenEast/nightfox.nvim'  -- Similar to Tokyo Night
+  use 'navarasu/onedark.nvim'  -- Similar to Tokyo Night
 end)
 
 -- Theme Setup
-vim.cmd('colorscheme nightfox')
+vim.cmd('colorscheme onedark')
 
 -- NERDTree Configuration
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', {noremap = true, silent = true})
