@@ -42,7 +42,7 @@ require('packer').startup(function(use)
   use 'jiangmiao/auto-pairs'
   use 'nvim-tree/nvim-web-devicons'
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use 'navarasu/onedark.nvim'  -- Similar to Tokyo Night
+  use 'navarasu/onedark.nvim'  -- Better theme
 end)
 
 -- Theme Setup
@@ -97,7 +97,7 @@ vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', {nore
 -- Lualine Configuration
 require('lualine').setup {
   options = {
-    theme = 'nightfox'
+    theme = 'onedark'
   }
 }
 
