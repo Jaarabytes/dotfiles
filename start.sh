@@ -18,7 +18,7 @@ function install_npm_packages() {
   local packages=("$@")
   for package in "${packages[@]}"; do
     echo "Installing $package..."
-    if npm install -g "$package"; then
+    if sudo npm install -g "$package"; then
       echo "Successfully installed $package"
     else
       echo "Error installing $package"
@@ -49,7 +49,7 @@ fi
 
 # Define package lists
 apt_packages=(ffmpeg tree eza bat htop iftop iostat netstat make curl wget grep sed awk nvim git docker python3-pip)
-npm_packages=(vercel@latest)
+npm_packages=(vercel@latest netlify-cli svelte-language-server typescript)
 snap_packages=(code obsidian slack telegram-desktop discord spotify)
 
 # Install packages
