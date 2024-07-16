@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# function to install packages using pacman (arch based distros)
+# Function to install packages using pacman (Arch-based distros)
 function install_pacman_packages() {
   local packages=("$@")
   for package in "${packages[@]}"; do
     echo "Installing $package..."
-    if sudo pacman -Sy "$package"; then
+    if sudo pacman -S --noconfirm "$package"; then
       echo "Successfully installed $package"
     else
       echo "Error installing $package"
@@ -13,7 +13,7 @@ function install_pacman_packages() {
   done
 }
 
-# Function to install packages using apt
+# Function to install packages using apt (Debian-based distros)
 function install_apt_packages() {
   local packages=("$@")
   for package in "${packages[@]}"; do
@@ -52,30 +52,63 @@ function install_snap_packages() {
   done
 }
 
+# Detect the distribution type
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$NAME
+else
+    echo "Cannot detect the operating system. Exiting."
+    exit 1
+fi
+
 # Update the system (ask for confirmation)
 read -p "Update system first (y/N)? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  read -p "Is your system debian based/ arch based (d/A)? " -n 1 -r 
-  echo
-  if [[ $REPLY =~ ^[dD]$ ]]; then
+  if [[ $OS == *"Arch"* || $OS == *"Manjaro"* ]]; then
+    sudo pacman -Syu --noconfirm && sudo pacman -Sc --noconfirm
+    echo "Updated Arch-based system"
+  elif [[ $OS == *"Ubuntu"* || $OS == *"Debian"* || $OS == *"Linux Mint"* ]]; then
     sudo apt update -y && sudo apt upgrade -y
-    echo "Updated system"
-  elif [[ $REPLY =~ ^[aA]$ ]]; then
-    sudo pacman -Sy
-    echo "Updated system"
+    echo "Updated Debian-based system"
+  else
+    echo "Unsupported distribution for automatic update. Please update manually."
   fi
 fi
 
 # Define package lists
-apt_packages=(ffmpeg kubernetes-client tree eza bat htop iftop iostat netstat make curl wget grep sed awk nvim git docker python3-pip)
+common_packages=(ffmpeg ufw tree htop make curl wget grep sed awk git python3-pip)
+arch_packages=("${common_packages[@]}" yay kubernetes-client eza bat iftop sysstat neovim docker)
+debian_packages=("${common_packages[@]}" snapd kubectl exa batcat iftop sysstat neovim docker.io)
 npm_packages=(vercel@latest netlify-cli svelte-language-server typescript)
 snap_packages=(code obsidian slack telegram-desktop discord spotify)
 
-# Install packages
-install_pacman_packages "${apt_packages[@]}"
-install_apt_packages "${apt_packages[@]}"
+# Install packages based on the detected OS
+if [[ $OS == *"Arch"* || $OS == *"Manjaro"* ]]; then
+  install_pacman_packages "${arch_packages[@]}"
+  # Install yay if not present
+  if ! command -v yay &> /dev/null; then
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf yay
+  fi
+  # Use yay to install AUR packages if needed
+  # yay -S --noconfirm package_name
+elif [[ $OS == *"Ubuntu"* || $OS == *"Debian"* || $OS == *"Linux Mint"* ]]; then
+  install_apt_packages "${debian_packages[@]}"
+  # Enable snap if it's not already enabled
+  sudo systemctl enable --now snapd.socket
+else
+  echo "Unsupported distribution. Please install packages manually."
+  exit 1
+fi
+
+# Install npm packages
 install_npm_packages "${npm_packages[@]}"
+
+# Install snap packages
 install_snap_packages "${snap_packages[@]}"
 
 echo "Installation complete!"
