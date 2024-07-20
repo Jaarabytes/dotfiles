@@ -6,7 +6,7 @@ function install_pip() {
   local pip=("$@")
   for package in "${pip[@]}"; do
     echo "Installing $package"
-    if pip3 install --user "$package"; then
+    if sudo pacman -Sy python-"$package"; then
       echo "Successfully installed $package"
     else
       echo "Error installing $package"
