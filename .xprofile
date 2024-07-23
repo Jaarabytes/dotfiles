@@ -1,0 +1,7 @@
+
+# Enable touch to click for touchpad
+xinput set-prop 10 "libinput Tapping Enabled" 1
+xinput set-prop 10 "libinput Tapping Drag Enabled" 1
+
+#Disable touch screen
+xinput disable 9
