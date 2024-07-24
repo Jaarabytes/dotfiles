@@ -42,11 +42,12 @@ require('packer').startup(function(use)
   use 'jiangmiao/auto-pairs'
   use 'nvim-tree/nvim-web-devicons'
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use 'navarasu/onedark.nvim'  -- Better theme
+  use  "ellisonleao/gruvbox.nvim" -- Even Better theme
 end)
 
 -- Theme Setup
-vim.cmd('colorscheme onedark')
+vim.cmd('colorscheme gruvbox')
+vim.cmd('set background=dark')
 
 -- NERDTree Configuration
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', {noremap = true, silent = true})
