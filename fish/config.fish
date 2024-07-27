@@ -9,12 +9,12 @@ alias brightness='xrandr --output eDP-1 --brightness'
 
 # Start the SSH agent
 if not pgrep -u $USER ssh-agent > /dev/null
-    eval (ssh-agent)
+    eval (ssh-agent -c)
 
 
 # Add SSH key if it's not already added
 if not ssh-add -l | grep -q '~/.ssh/id_rsa/hi'
-    ssh-add /path/to/my/ssh-key
+    ssh-add ~/.ssh/id_rsa/hi
 
 
 alias ezaa='eza -a'
