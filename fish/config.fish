@@ -1,66 +1,33 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
-end
+
 
 set -U fish_color_normal fbf1c7
 set -U fish_color_command 98971a
 
-function brightness
-  xrandr --output eDP-1 --brightness
-end
+alias brightness='xrandr --output eDP-1 --brightness'
 
-function ezaa
-  eza -a
-end
+# Start the SSH agent
+if not pgrep -u $USER ssh-agent > /dev/null
+    eval (ssh-agent)
 
-function exaa
-  exa -a
-end
 
-function lg
-  lazygit
-end
+# Add SSH key if it's not already added
+if not ssh-add -l | grep -q '~/.ssh/id_rsa/hi'
+    ssh-add /path/to/my/ssh-key
 
-function gst
-  git status
-end
 
-function gsw
-  git switch
-end
-
-function gbr
-  git branch
-end
-
-function glg 
-  git log
-end
-
-function gf
-  git fetch
-end
-
-function zshconfig
-  nvim ~/.zshrc
-end
-
-function bashconfig
-  nvim ~/.bashrc
-end
-
-function gch
-  git checkout 
-end
-
-function gpl
-  git pull
-end
-
-function lzd
-  lazydocker
-end
-
-function gti
-  git
-end
+alias ezaa='eza -a'
+alias exaa='exa -a'
+alias lg='lazygit'
+alias gst='git status'
+alias gsw='git switch'
+alias gbr='git branch'
+alias glg='git log'
+alias gf='git fetch'
+alias zshconfig='nvim ~/.zshrc'
+alias bashconfig='nvim ~/.bashrc'
+alias gch='git checkout'
+alias gpl='git pull'
+alias lzd='lazydocker'
+alias gti='git'
