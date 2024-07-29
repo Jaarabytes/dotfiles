@@ -6,6 +6,6 @@ bindings = [
 { key = 'P', mods = "Control|Shift",  action = "Paste" },
 { key = 'N', mods = "Control|Shift", action = "CreateNewWindow"},
 { key = 'T', mods = "Control|Shift", action = "SpawnNewInstance"},
-{ key = 'X', mods = "Control|Shift", action = "ClearHistory"},
+{ key = 'X', mods = "Control|Shift", action = "ToggleMaximized"},
 { key = 'Q', mods = "Control|Shift", action = "Quit"}
 ]

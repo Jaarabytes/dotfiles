@@ -7,16 +7,6 @@ set -U fish_color_command 98971a
 
 alias brightness='xrandr --output eDP-1 --brightness'
 
-# Start the SSH agent if it's not already running
-if not pgrep -u $USER ssh-agent > /dev/null
-    eval (ssh-agent -c)
-end
-
-# Add SSH key if it's not already added
-if not ssh-add -l | grep -q '~/.ssh/id_rsa/hi'
-    ssh-add ~/.ssh/id_rsa/hi
-end
-
 alias ezaa='eza -a'
 alias exaa='exa -a'
 alias lg='lazygit'

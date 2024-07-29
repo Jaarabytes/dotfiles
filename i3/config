@@ -19,7 +19,7 @@ exec_always --no-startup-id ~/.config/polybar/launch_script.sh
 exec --no-startup-id dunst
 
 # PrintScreen automatically takes Screenshots
-bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png" ~/Pictures/.
+bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png" ~/Pictures/.
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -58,8 +58,8 @@ floating_modifier $mod
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
-# start a terminal
-bindsym $mod+t exec --no-startup-id i3-sensible-terminal
+# start the king of terminals, alacritty
+bindsym $mod+t exec --no-startup-id alacritty
 
 # kill focused window
 bindsym $mod+q kill

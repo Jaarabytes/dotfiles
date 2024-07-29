@@ -42,13 +42,27 @@ require('packer').startup(function(use)
   use 'jiangmiao/auto-pairs'
   use 'nvim-tree/nvim-web-devicons'
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use  "ellisonleao/gruvbox.nvim" -- Even Better theme
+  use { "catppuccin/nvim", as = "catppuccin" }
 end)
 
 -- Theme Setup
-vim.cmd('colorscheme gruvbox')
-vim.cmd('set background=dark')
+vim.cmd('colorscheme catppuccin')
 
+
+local packer = require('packer')
+
+local function silent_packer_compile()
+  packer.compile()
+end
+
+local function silent_packer_clean()
+  packer.clean()
+end
+
+vim.defer_fn(function()
+  silent_packer_compile()
+  silent_packer_clean()
+end, 100)
 -- NERDTree Configuration
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', {noremap = true, silent = true})
 
@@ -104,7 +118,7 @@ require('lualine').setup {
 
 -- Treesitter Configuration
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {"lua", "vim", "javascript", "typescript", "svelte"},
+  ensure_installed = {"lua", "vim", "javascript", "typescript", "svelte", "go"},
   highlight = {
     enable = true,
   },
