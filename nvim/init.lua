@@ -71,7 +71,7 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 
 local lspconfig = require('lspconfig')
-local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright'}
+local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
