@@ -18,6 +18,10 @@ exec_always --no-startup-id ~/.config/polybar/launch_script.sh
 # start dunst automatically on login
 exec --no-startup-id dunst
 
+
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd
+
 # PrintScreen automatically takes Screenshots
 bindsym Print exec --no-startup-id maim "/home/$USER/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png" ~/Pictures/.
 
