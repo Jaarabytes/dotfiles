@@ -1,7 +1,8 @@
 -- Init.lua
 
 -- Basic Settings
-vim.g.mapleader = " "  -- Set leader key to space
+vim.g.mapleader = "\\"  -- Set leader key to backspace
+vim.bo.buftype = ''
 local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
@@ -190,19 +191,34 @@ keymap('v', 'J', ":m '>+1<CR>gv=gv", {noremap = true})
 keymap('v', 'K', ":m '<-2<CR>gv=gv", {noremap = true})
 
 -- Auto Commands
-vim.cmd([[
-  augroup AutoSave
-    autocmd!
-    autocmd TextChanged,TextChangedI <buffer> silent write
-  augroup END
+local autocmd = vim.api.nvim_create_autocmd
 
-  augroup HideGitIgnored
-    autocmd!
-    autocmd VimEnter,WinEnter * if &ft != 'help' | setlocal conceallevel=2 | endif
-  augroup END
-]])
+-- Auto Save
+autocmd({"TextChanged", "TextChangedI"}, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.buftype == "" then
+      vim.cmd("silent write")
+    else
+      vim.bo.buftype = ""
+      vim.cmd("silent write")
+      print("Buffer type reset to allow writing")
+    end
+  end
+})
+
+-- Hide Git Ignored
+autocmd({"VimEnter", "WinEnter"}, {
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype ~= "help" then
+      vim.wo.conceallevel = 2
+    end
+  end
+})
 
 -- Enable viewing .env files
-vim.cmd([[
-  autocmd BufRead,BufNewFile .env* set filetype=sh
-]])
+autocmd({"BufRead", "BufNewFile"}, {
+  pattern = ".env*",
+  command = "set filetype=sh"
+})
