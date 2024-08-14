@@ -40,17 +40,17 @@ function install_npm_packages() {
 }
 
 # Function to install snap packages
-function install_snap_packages() {
-  local packages=("$@")
-  for package in "${packages[@]}"; do
-    echo "Installing $package..."
-    if sudo snap install "$package"; then
-      echo "Successfully installed $package"
-    else
-      echo "Error installing $package"
-    fi
-  done
-}
+# function install_snap_packages() {
+#  local packages=("$@")
+#  for package in "${packages[@]}"; do
+#    echo "Installing $package..."
+#    if sudo snap install "$package"; then
+#      echo "Successfully installed $package"
+#    else
+#      echo "Error installing $package"
+#    fi
+#  done
+#}
 
 # Detect the distribution type
 if [ -f /etc/os-release ]; then
@@ -78,7 +78,7 @@ fi
 
 # Define package lists
 common_packages=(ffmpeg hyfetch ufw tree htop make curl wget grep sed awk git python3-pip alacritty nvtop fish zoxide)
-arch_packages=("${common_packages[@]}" yay kubernetes-client eza bat iftop sysstat neovim docker)
+arch_packages=("${common_packages[@]}" yay kubernetes-client eza bat iftop sysstat neovim docker minikube kubectl vagrant screenfetch)
 debian_packages=("${common_packages[@]}" snapd kubectl exa batcat iftop sysstat neovim docker.io)
 npm_packages=(vercel@latest eslint netlify-cli svelte-language-server typescript pyright ts-node pnpm)
 snap_packages=(code obsidian slack telegram-desktop discord spotify)
