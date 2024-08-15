@@ -1,26 +1,22 @@
--- Init.lua
-
 -- Basic Settings
-vim.g.mapleader = "\\"  -- Set leader key to backspace
-vim.bo.buftype = ''
-local opt = vim.opt
-opt.number = true
-opt.relativenumber = true
-opt.expandtab = true
-opt.shiftwidth = 2
-opt.tabstop = 2
-opt.smartindent = true
-opt.termguicolors = true
-opt.scrolloff = 8
-opt.sidescrolloff = 8
-opt.hlsearch = false
-opt.incsearch = true
-opt.ignorecase = true
-opt.smartcase = true
-opt.clipboard = "unnamedplus"
-opt.conceallevel = 0  -- Show `` in markdown files
+vim.g.mapleader = "\\"  -- Set leader key to \
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.smartindent = true
+vim.opt.termguicolors = true
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.clipboard = "unnamedplus"
+vim.opt.conceallevel = 0  -- Show `` in markdown files
 
--- Plugin Setup
+-- Plugin Setup (using lazy.nvim)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -35,30 +31,30 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  -- Essential plugins
+  -- LSP
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
+  -- Completion
   "hrsh7th/nvim-cmp",
   "hrsh7th/cmp-nvim-lsp",
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-path",
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
+  -- Utilities
   "nvim-treesitter/nvim-treesitter",
   "nvim-telescope/telescope.nvim",
   "nvim-lua/plenary.nvim",
+  -- UI
   "nvim-lualine/lualine.nvim",
   "lewis6991/gitsigns.nvim",
-  "windwp/nvim-autopairs",
   { "catppuccin/nvim", name = "catppuccin" },
-  {
-    "folke/which-key.nvim",
-    config = function() require("which-key").setup() end
-  },
+  -- File explorer
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
-  -- Add more plugins here
 })
 
 -- Theme Setup
@@ -66,10 +62,12 @@ vim.cmd('colorscheme catppuccin')
 
 -- LSP Configuration
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
+})
 
 local lspconfig = require('lspconfig')
-local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
+local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
 local on_attach = function(client, bufnr)
   local opts = { noremap=true, silent=true, buffer=bufnr }
@@ -83,10 +81,13 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
 end
 
+local capabilities = cmp_nvim_lsp.default_capabilities()
+
+local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
-    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    capabilities = capabilities,
   }
 end
 
@@ -141,29 +142,13 @@ require('nvim-treesitter.configs').setup {
   ensure_installed = {"lua", "vim", "javascript", "typescript", "svelte", "go"},
   highlight = { enable = true },
   indent = { enable = true },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
 }
 
 -- Nvim-tree Configuration
-require("nvim-tree").setup({
-  filters = {
-    dotfiles = false,  -- Show dotfiles
-  },
-})
+require("nvim-tree").setup()
 
 -- Lualine Configuration
 require('lualine').setup { options = { theme = 'catppuccin' } }
-
--- Autopairs setup
-require('nvim-autopairs').setup{}
 
 -- Gitsigns setup
 require('gitsigns').setup()
@@ -178,47 +163,16 @@ keymap('n', '<leader>ff', '<cmd>Telescope find_files<cr>', {noremap = true})
 keymap('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', {noremap = true})
 keymap('n', '<leader>fb', '<cmd>Telescope buffers<cr>', {noremap = true})
 keymap('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', {noremap = true})
-keymap('n', '<leader>gc', '<cmd>Telescope git_commits<cr>', {noremap = true})
-keymap('n', '<leader>gb', '<cmd>Telescope git_branches<cr>', {noremap = true})
-keymap('n', '<leader>gs', '<cmd>Telescope git_status<cr>', {noremap = true})
-keymap('n', '<C-h>', '<C-w>h', {noremap = true})
-keymap('n', '<C-j>', '<C-w>j', {noremap = true})
-keymap('n', '<C-k>', '<C-w>k', {noremap = true})
-keymap('n', '<C-l>', '<C-w>l', {noremap = true})
-keymap('v', '<', '<gv', {noremap = true})
-keymap('v', '>', '>gv', {noremap = true})
-keymap('v', 'J', ":m '>+1<CR>gv=gv", {noremap = true})
-keymap('v', 'K', ":m '<-2<CR>gv=gv", {noremap = true})
 
 -- Auto Commands
-local autocmd = vim.api.nvim_create_autocmd
-
--- Auto Save
-autocmd({"TextChanged", "TextChangedI"}, {
+vim.api.nvim_create_autocmd({"TextChanged", "TextChangedI"}, {
   pattern = "*",
   callback = function()
-    if vim.bo.buftype == "" then
-      vim.cmd("silent write")
-    else
-      vim.bo.buftype = ""
-      vim.cmd("silent write")
-      print("Buffer type reset to allow writing")
+    if vim.bo.buftype == "" and vim.bo.modified then
+      local fname = vim.fn.expand('%')
+      if fname ~= '' and not vim.o.readonly then
+        vim.cmd('silent update')
+      end
     end
   end
-})
-
--- Hide Git Ignored
-autocmd({"VimEnter", "WinEnter"}, {
-  pattern = "*",
-  callback = function()
-    if vim.bo.filetype ~= "help" then
-      vim.wo.conceallevel = 2
-    end
-  end
-})
-
--- Enable viewing .env files
-autocmd({"BufRead", "BufNewFile"}, {
-  pattern = ".env*",
-  command = "set filetype=sh"
 })
