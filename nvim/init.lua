@@ -42,6 +42,7 @@ require("lazy").setup({
   "hrsh7th/cmp-path",
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
+  'windwp/nvim-autopairs',
   -- Utilities
   "nvim-treesitter/nvim-treesitter",
   "nvim-telescope/telescope.nvim",
@@ -152,6 +153,23 @@ require('lualine').setup { options = { theme = 'catppuccin' } }
 
 -- Gitsigns setup
 require('gitsigns').setup()
+
+-- Autopairs Configuration
+require('nvim-autopairs').setup({
+  check_ts = true,
+  ts_config = {
+    lua = {'string'},  -- don't add pairs in lua string treesitter nodes
+    javascript = {'template_string'},  -- don't add pairs in javascript template_string treesitter nodes
+  },
+})
+
+-- If you want to automatically add `(` after selecting a function or method
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
+
 
 -- Key Mappings
 local keymap = vim.keymap.set
