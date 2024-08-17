@@ -15,6 +15,6 @@ chmod +x start.sh
 
 ## Preview with Hyprland
 
-[!/home/trafalgar/todo/automatis/Screenshot_20240817_204105.png]
+![Hyprland + catpuccin ](Screenshot_20240817_204105.png)
 
-[!/home/trafalgar/todo/automatis/Screenshot_20240817_204141.png]
+![Hyprland + catpuccin ](Screenshot_20240817_204141.png)
