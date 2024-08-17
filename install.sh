@@ -72,7 +72,7 @@ rice() {
     done
 
     # Install packages
-    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "nvim")
+    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq")
     install_packages "${packages[@]}"
 
     # Copy configurations

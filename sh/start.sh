@@ -78,10 +78,10 @@ fi
 
 # Define package lists
 common_packages=(ffmpeg hyfetch ufw tree htop make curl wget grep sed awk git python3-pip alacritty nvtop fish zoxide)
-arch_packages=("${common_packages[@]}" yay kubernetes-client eza bat iftop sysstat neovim docker minikube kubectl vagrant screenfetch)
+arch_packages=("${common_packages[@]}" yay kubernetes-client eza bat iftop sysstat neovim docker minikube kubectl vagrant screenfetch wf-recorder)
 debian_packages=("${common_packages[@]}" snapd kubectl exa batcat iftop sysstat neovim docker.io)
-npm_packages=(vercel@latest eslint netlify-cli svelte-language-server typescript pyright ts-node pnpm)
-snap_packages=(code obsidian slack telegram-desktop discord spotify)
+npm_packages=(eslint svelte-language-server typescript pyright ts-node pnpm)
+snap_packages=(codium telegram-desktop discord)
 
 # Install packages based on the detected OS
 if [[ $OS == *"Arch"* || $OS == *"Manjaro"* ]]; then
