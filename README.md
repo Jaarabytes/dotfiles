@@ -1,17 +1,20 @@
-# Automatis
+# Dotfiles
 
 You are highly welcome to ~~steal~~ clone them
 
-## Ricing
+Primarily I use arch linux, with hyprland but i3 is also great.
 
-This partially rices your PC (for grownups only ie Linux users ie ubuntu is a toy-linux)
+Just:
 
 ```bash
-git clone git@github.com:Jaarabytes/automatis.git
-cd automatis
-sudo bash install.sh
+git clone git@github.com:Jaarabytes/dotfiles.git
+cd dotfiles
+chmod +x start.sh
+./start.sh
 ```
 
-Contributions are also allowed. 
+## Preview with Hyprland
 
-Enjoy
+[!/home/trafalgar/todo/automatis/Screenshot_20240817_204105.png]
+
+[!/home/trafalgar/todo/automatis/Screenshot_20240817_204141.png]
