@@ -33,7 +33,7 @@ install_packages() {
 
 # Function to copy configurations
 copy_configs() {
-    local configs=("dunst" "i3" "rofi" "zsh" "polybar" "alacritty" "kitty" "maim" "nvim")
+    local configs=("dunst" "i3" "rofi" "zsh" "polybar" "alacritty" "kitty" "nvim" "fish" "waybar" "hypr")
     if [ -d ~/.config ]; then
         for config in "${configs[@]}"; do
             if [ -d "$config" ]; then
@@ -72,10 +72,9 @@ rice() {
     done
 
     # Install packages
-    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq")
+    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland-bin"  "waybar-hyprland" "swaybg" "swaylock-effects" "wofi" "wlogout" "mako" "thunar" "ttf-jetbrains-mono-nerd" "noto-fonts-emoji" "polkit-gnome" "python-requests" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "dracula-gtk-theme" "dracula-icons-git" "xdg-desktop-portal-hyprland-git")
     install_packages "${packages[@]}"
 
-    # Copy configurations
     copy_configs
 
     echo "Desktop ricing completed."
