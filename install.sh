@@ -1,37 +1,63 @@
 #!/bin/bash
 
-# Improved desktop ricing script
-
-# Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to install packages
-install_packages() {
-    local packages=("$@")
-    for package in "${packages[@]}"; do
-        echo "Installing $package ..."
-        if command_exists yay; then
-            if yay -S --noconfirm "$package"; then
-                echo "Successfully installed $package"
-            else
-                echo "Error installing $package"
-            fi
-        elif command_exists pacman; then
-            if sudo pacman -S --noconfirm "$package"; then
-                echo "Successfully installed $package"
-            else
-                echo "Error installing $package"
-            fi
-        else
-            echo "Error: Neither yay nor pacman found. Cannot install packages."
-            exit 1
-        fi
-    done
+detect_package_manager() {
+    if command_exists nix; then
+        echo "nix"
+    elif command_exists yay; then
+        echo "yay"
+    elif command_exists pacman; then
+        echo "pacman"
+    else
+        echo "unknown"
+    fi
 }
 
-# Function to copy configurations
+install_packages() {
+    local packages=("$@")
+    local package_manager=$(detect_package_manager)
+
+    case $package_manager in
+        nix)
+            for package in "${packages[@]}"; do
+                echo "Installing $package ..."
+                if nix-env -iA nixos.$package; then
+                    echo "Successfully installed $package"
+                else
+                    echo "Error installing $package"
+                fi
+            done
+            ;;
+        yay)
+            for package in "${packages[@]}"; do
+                echo "Installing $package ..."
+                if yay -S --noconfirm "$package"; then
+                    echo "Successfully installed $package"
+                else
+                    echo "Error installing $package"
+                fi
+            done
+            ;;
+        pacman)
+            for package in "${packages[@]}"; do
+                echo "Installing $package ..."
+                if sudo pacman -S --noconfirm "$package"; then
+                    echo "Successfully installed $package"
+                else
+                    echo "Error installing $package"
+                fi
+            done
+            ;;
+        *)
+            echo "Error: Unsupported package manager. Cannot install packages."
+            exit 1
+            ;;
+    esac
+}
+
 copy_configs() {
     local configs=("dunst" "i3" "rofi" "zsh" "polybar" "alacritty" "kitty" "nvim" "fish" "waybar" "hypr")
     if [ -d ~/.config ]; then
@@ -50,7 +76,6 @@ copy_configs() {
     fi
 }
 
-# Main function
 rice() {
     echo "Starting desktop ricing process..."
 
@@ -71,24 +96,25 @@ rice() {
         fi
     done
 
-    # Install packages
-    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland-bin"  "waybar-hyprland" "swaybg" "swaylock-effects" "wofi" "wlogout" "mako" "thunar" "ttf-jetbrains-mono-nerd" "noto-fonts-emoji" "polkit-gnome" "python-requests" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "dracula-gtk-theme" "dracula-icons-git" "xdg-desktop-portal-hyprland-git")
+    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland"  "waybar" "swaybg" "wofi" "wlogout" "mako" "thunar" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "xdg-desktop-portal-hyprland")
     install_packages "${packages[@]}"
 
     copy_configs
 
     echo "Desktop ricing completed."
-    echo "You can start your session using i3 now."
+    echo "You can start your session using i3 or Hyprland now."
     echo "Rofi should be accessed using super+I or windows-super-key+I"
 }
 
-# Run the main function
 rice
 
-# Prompt for reboot
 read -p "Do you want to reboot now? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Rebooting..."
-    sudo reboot
+    if command_exists systemctl; then
+        sudo systemctl reboot
+    else
+        sudo reboot
+    fi
 fi
