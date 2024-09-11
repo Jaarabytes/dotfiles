@@ -174,6 +174,7 @@ cmp.event:on(
 -- Key Mappings
 local keymap = vim.keymap.set
 keymap('n', '<leader>w', ':w<CR>', {noremap = true})
+keymap('n', '<leader>t', ':tabnew<CR>', {noremap = true})
 keymap('n', '<leader>q', ':q<CR>', {noremap = true})
 keymap('n', '<leader>h', ':nohl<CR>', {noremap = true})
 keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent = true})

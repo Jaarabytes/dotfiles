@@ -42,7 +42,7 @@ window#waybar {
     background: #1e1e2e;
 }
 
-#clock, #battery, #cpu, #memory, #temperature, #network, #pulseaudio, #custom-media, #tray, #mode {
+#clock, #battery, #cpu, #memory, #temperature, #network, #pulseaudio, #custom-media, #tray, #mode #custom-wlogout {
     padding: 0 10px;
     margin: 5px 0;
     color: #cdd6f4;
@@ -81,16 +81,6 @@ window#waybar {
     animation-direction: alternate;
 }
 
-#cpu {
-    background-color: #89dceb;
-    color: #1e1e2e;
-}
-
-#memory {
-    background-color: #eba0ac;
-    color: #1e1e2e;
-}
-
 #network {
     background-color: #b4befe;
     color: #1e1e2e;
@@ -110,15 +100,6 @@ window#waybar {
     color: #1e1e2e;
 }
 
-#temperature {
-    background-color: #f9e2af;
-    color: #1e1e2e;
-}
-
-#temperature.critical {
-    background-color: #f38ba8;
-}
-
 #tray {
     background-color: #1e1e2e;
 }
@@ -130,4 +111,11 @@ window#waybar {
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
     background-color: #f38ba8;
+}
+
+#custom-wlogout {
+    padding: 0 10px;
+    background: transparent;
+    color: #cdd6f4;
+    border-bottom: 3px solid transparent;
 }
