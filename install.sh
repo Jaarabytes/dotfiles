@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Author: Jaarabytes
+# NOTE: This configuration only supports arch linux or nixos. 
+# I will add support for fedora, if i a second PC.
+
+
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
@@ -77,6 +82,9 @@ copy_configs() {
 }
 
 rice() {
+    echo "Cloning the repository"
+    git clone https://github.com/Jaarabytes/dotfiles.git
+    cd dotfiles
     echo "Starting desktop ricing process..."
 
     # Backup existing configurations
@@ -86,7 +94,6 @@ rice() {
     cp -r ~/.config/* "$backup_dir" 2>/dev/null
     echo "Backup created at $backup_dir"
 
-    # Run additional scripts if they exist
     for script in sh/start.sh sh/machine-learning.sh; do
         if [ -f "$script" ]; then
             echo "Running $script..."

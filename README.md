@@ -2,19 +2,18 @@
 
 You are highly welcome to ~~steal~~ clone them
 
-Primarily I use arch linux, with hyprland but i3 is also great.
+Primarily I use **Nix OS** ~~arch linux~~, with hyprland but i3 is also great.
 
 Just:
 
 ```bash
-git clone git@github.com:Jaarabytes/dotfiles.git
-cd dotfiles
-chmod +x start.sh
-./start.sh
+wget -O - https://raw.githubusercontent.com/Jaarabytes/dotfiles/main/start.sh | bash
 ```
 
-## Preview with Hyprland
+## Nix OS btw
 
-![Hyprland + catpuccin ](Screenshot_20240817_204105.png)
+![Hyprland + catpuccin ](Screenshot_20240911_102423.png)
+
+## I use arch btw
 
 ![Hyprland + catpuccin ](Screenshot_20240817_204141.png)
