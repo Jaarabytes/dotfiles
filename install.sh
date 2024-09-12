@@ -81,11 +81,39 @@ copy_configs() {
     fi
 }
 
+install_zsh(){
+  echo "Installing oh my zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  echo "Installed oh-my-zsh..."
+
+  custom_zshrc="./.zshrc"
+
+  # Check if the custom .zshrc exists
+  if [ ! -f "$custom_zshrc" ]; then
+    echo "Custom .zshrc file not found!"
+    exit 1
+  fi
+
+  # Check if the original .zshrc exists in the home directory
+  if [ -f "$HOME/.zshrc" ]; then
+      echo "Appending custom .zshrc into existing ~/.zshrc..."
+      cat "$custom_zshrc" >> "$HOME/.zshrc"
+      echo "Appended successfully!"
+  else
+      echo "No existing .zshrc found. Cloning custom .zshrc to home directory..."
+      cp "$custom_zshrc" "$HOME/.zshrc"
+      echo "Cloned successfully!"
+  fi
+}
+
+
 rice() {
     echo "Cloning the repository"
     git clone https://github.com/Jaarabytes/dotfiles.git
     cd dotfiles
     echo "Starting desktop ricing process..."
+
+    install_zsh
 
     # Backup existing configurations
     echo "Backing up existing configurations..."
