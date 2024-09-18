@@ -22,36 +22,39 @@
   time.timeZone = "Africa/Nairobi";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Desktop Environment
+  # Desktop Environment and Window Managers
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    libinput.enable = false;
+    displayManager = {
+      lightdm.enable = true;  # Enable LightDM
+      defaultSession = "none+i3";  # Set i3 as the default session
+    };
+    windowManager.i3 = {
+      enable = true;
+      package = pkgs.i3;
+    };
+    desktopManager.gnome.enable = true;  # Keep GNOME as an option
+    libinput.enable = true;
     xkb = {
       layout = "us";
       variant = "";
     };
   };
 
-  # Window Managers
+  # Keep other window managers
   programs = {
     hyprland.enable = true;
     waybar.enable = true;
   };
 
   # Audio
-  # Disable PulseAudio
   hardware.pulseaudio.enable = false;
-  # Enable PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    # jack.enable = true;
   };
 
   # Printing
@@ -72,42 +75,34 @@
 
   # System Packages
   environment.systemPackages = with pkgs; [
-    # System tools
+    # Existing packages...
     wget git tree docker
-    # Browsers
     firefox google-chrome chromium brave
-    # Communication
     discord telegram-desktop protonvpn-gui riseup-vpn
-    # Development
     nodejs python3 python3Packages.pip nodePackages.pyright lazygit vim neovim lazydocker bun deno jre8 vagrant ruby mysql84 pnpm ollama
-    # Python and machine learning libraries
     (python3.withPackages (ps: with ps; [ numpy pandas matplotlib scipy scikit-learn torch]))
-    # Desktop environment tools
     hyprland wl-clipboard waybar swaybg foot grim swaylock maim kitty
-    # Multimedia
     audacious vlc
-    # System information
     fastfetch neofetch
-    # Additional useful tools
     tmux jq curl gnumake cmake
-    # Text editors
     vscodium
-    # Version control
     git-lfs
-    # File managers
     ranger libsForQt5.dolphin xfce.thunar xfce.thunar-volman
-    # Image manipulation
     gimp inkscape
-    # Office suite
     libreoffice
-    # Password manager
     keepassxc
-    # System monitoring
     glances iotop
-    # Network tools
     wireshark nmap
-    # Virtualization
     virtualbox
+    
+    # Add i3 and related packages
+    i3
+    i3status
+    i3lock
+    dmenu
+    rofi  # Application launcher for i3
+    feh  # For setting wallpapers in i3
+    dunst  # Notification daemon for i3
   ];
 
   # Program Configurations
@@ -136,9 +131,9 @@
     openssh.enable = true;
     flatpak.enable = true;
     # Enable if you want to use Docker
-    docker.enable = true;
-    services.gvfs.enable = true;
-    services.tumbler.enable = true;
+    # docker.enable = true;
+    # services.gvfs.enable = true;
+    # services.tumbler.enable = true;
   };
 
   # Fonts
