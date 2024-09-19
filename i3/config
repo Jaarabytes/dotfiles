@@ -107,8 +107,8 @@ bar {
 }
 
 # Gaps
-gaps inner 12
-gaps outer 20
+gaps inner 6
+gaps outer 10
 
 # Window border
 default_border pixel 2
@@ -165,7 +165,7 @@ bindsym $mod+u [urgent=latest] focus
 workspace_auto_back_and_forth yes
 
 # Use a different wallpaper
-exec_always --no-startup-id feh --bg-fill /path/to/your/wallpaper.jpg
+exec_always --no-startup-id feh --randomize --bg-fill ~/void/wal-main/
 
 # Enable compton (or picom) for transparency and animations
 exec_always --no-startup-id picom -b

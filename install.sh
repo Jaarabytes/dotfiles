@@ -64,7 +64,7 @@ install_packages() {
 }
 
 copy_configs() {
-    local configs=("dunst" "i3" "rofi" "zsh" "polybar" "alacritty" "kitty" "nvim" "fish" "waybar" "hypr")
+    local configs=("dunst" "i3" "rofi" "zsh" "polybar" "alacritty" "kitty" "nvim" "fish" "waybar" "hypr" "picom")
     if [ -d ~/.config ]; then
         for config in "${configs[@]}"; do
             if [ -d "$config" ]; then
@@ -91,7 +91,6 @@ install_zsh(){
   # Check if the custom .zshrc exists
   if [ ! -f "$custom_zshrc" ]; then
     echo "Custom .zshrc file not found!"
-    exit 1
   fi
 
   # Check if the original .zshrc exists in the home directory
@@ -120,6 +119,7 @@ rice() {
     backup_dir="$HOME/config_backup_$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$backup_dir"
     cp -r ~/.config/* "$backup_dir" 2>/dev/null
+    sudo cp -r /etc/nixos/* "$backup_dir" 2>/dev/null
     echo "Backup created at $backup_dir"
 
     for script in sh/start.sh sh/machine-learning.sh; do
