@@ -1,3 +1,4 @@
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -106,6 +107,8 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias exaa='exa -a'
+alias ezaa='eza -a'
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     . /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -145,3 +148,6 @@ alias src='source ~/.zshrc'
 alias nx='sudo nvim /etc/nixos/configuration.nix'
 alias nxb='sudo nixos-rebuild switch'
 eval "$(zoxide init zsh)"
+export CODEBERG='git@codeberg.org:tmlcherki/dotfiles.git'
+export GITLAB='git@gitlab.com:Jaarabytes/dotfiles.git'
+export GITHUB='git@github.com:Jaarabytes/dotfiles.git'
