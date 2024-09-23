@@ -50,8 +50,13 @@ require("lazy").setup({
   -- UI
   "nvim-lualine/lualine.nvim",
   "lewis6991/gitsigns.nvim",
+  -- Themes
   { "catppuccin/nvim", name = "catppuccin" },
-  -- File explorer
+ { "rose-pine/neovim", name = "rose-pine" },
+ { "morhetz/gruvbox", name = "gruvbox"},
+ { "folke/tokyonight.nvim", name = "tokyonight"},
+ { "arcticicestudio/nord-vim", name = "nord-vim"},
+    -- File explorer
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -61,10 +66,24 @@ require("lazy").setup({
 -- Theme Setup
 vim.cmd('colorscheme catppuccin')
 
+
+-- List of color schemes
+local colorschemes = {"gruvbox", "nord", "tokyonight", "catppuccin", "rose-pine"}
+
+-- Sets a random color scheme
+local function random_colorscheme()
+  math.randomseed(os.time())
+  local scheme = colorschemes[math.random(1, #colorschemes)]
+  vim.cmd("colorscheme " .. scheme)
+end
+
+-- Well, well, well
+random_colorscheme()
+
 -- LSP Configuration
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
+  ensure_installed = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
 })
 
 local lspconfig = require('lspconfig')
@@ -84,7 +103,7 @@ end
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
-local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls'}
+local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -140,7 +159,7 @@ telescope.setup()
 
 -- Treesitter Configuration
 require('nvim-treesitter.configs').setup {
-  ensure_installed = {"lua", "vim", "javascript", "typescript", "svelte", "go"},
+  ensure_installed = {"lua", "vim", "javascript", "typescript", "svelte", "go", "c"},
   highlight = { enable = true },
   indent = { enable = true },
 }
