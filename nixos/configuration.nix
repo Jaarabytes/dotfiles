@@ -79,14 +79,20 @@
     wget git tree docker
     firefox google-chrome chromium brave
     discord telegram-desktop protonvpn-gui riseup-vpn
-    nodejs python3 python3Packages.pip nodePackages.pyright lazygit vim neovim lazydocker bun deno jre8 vagrant ruby mysql84 pnpm ollama
-    (python3.withPackages (ps: with ps; [ numpy pandas matplotlib scipy scikit-learn torch]))
+    nodejs nodePackages.pyright lazygit vim neovim lazydocker bun deno jre8 vagrant ruby mysql84 pnpm ollama
+    (python311.buildEnv.override {
+    extraLibs = with python311Packages; [
+      requests django fastapi jinja2 sqlalchemy asyncpg httpx beautifulsoup4
+      aiohttp numpy pandas scikit-learn tensorflow matplotlib seaborn
+      jupyter scipy xgboost lightgbm matplotlib torch
+    ];
+    })
     hyprland wl-clipboard waybar swaybg foot grim swaylock maim kitty
     audacious vlc
     fastfetch neofetch
     tmux jq curl gnumake cmake
     vscodium
-    git-lfs
+    git-lfs ansible yazi wezterm alacritty kitty sqlite burpsuite gwenview okular
     ranger libsForQt5.dolphin xfce.thunar xfce.thunar-volman
     gimp inkscape
     libreoffice
@@ -94,15 +100,7 @@
     glances iotop
     wireshark nmap
     virtualbox
-    
-    # Add i3 and related packages
-    i3
-    i3status
-    i3lock
-    dmenu
-    rofi  # Application launcher for i3
-    feh  # For setting wallpapers in i3
-    dunst  # Notification daemon for i3
+    i3 i3status i3lock dmenu rofi feh dunst
   ];
 
   # Program Configurations
@@ -120,7 +118,7 @@
   # Environment Variables
   environment.sessionVariables = {
     NODE_PATH = "${pkgs.nodejs}/lib/node_modules";
-    PYTHONPATH = "${pkgs.python3}/lib/python3.10/site-packages";
+    PYTHONPATH = "${pkgs.python311}/lib/python3.11/site-packages";
     GOPATH = "$HOME/go";
     RUST_SRC_PATH = "${pkgs.rustc}/lib/rustlib/src/rust/src";
     EDITOR = "nvim";
@@ -129,7 +127,10 @@
   # Services
   services = {
     openssh.enable = true;
-    flatpak.enable = true;
+    ollama.enable = true;
+    mysql.enable = true;
+   mysql.package = pkgs.mysql;
+   flatpak.enable = true;
     # Enable if you want to use Docker
     # docker.enable = true;
     # services.gvfs.enable = true;

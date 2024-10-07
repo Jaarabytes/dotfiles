@@ -18,7 +18,6 @@ while true; do
         notify-send "Charging complete" "Battery level is at ${BATTERY_LEVEL}%"
     fi
 
-
     # Wait 5 minutes before checking again
     sleep 300
 done
