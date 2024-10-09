@@ -80,13 +80,15 @@
     firefox google-chrome chromium brave
     discord telegram-desktop protonvpn-gui riseup-vpn
     nodejs nodePackages.pyright lazygit vim neovim lazydocker bun deno jre8 vagrant ruby mysql84 pnpm ollama
-    (python311.buildEnv.override {
-    extraLibs = with python311Packages; [
-      requests django fastapi jinja2 sqlalchemy asyncpg httpx beautifulsoup4
-      aiohttp numpy pandas scikit-learn tensorflow matplotlib seaborn
-      jupyter scipy xgboost lightgbm matplotlib torch
-    ];
-    })
+    (python311.withPackages (ps: with ps; [
+                requests
+                numpy
+                pandas
+                pillow
+                pip
+                pyarrow
+            ]))
+    pyright docker-compose sqlitebrowser
     hyprland wl-clipboard waybar swaybg foot grim swaylock maim kitty
     audacious vlc
     fastfetch neofetch
@@ -96,20 +98,26 @@
     ranger libsForQt5.dolphin xfce.thunar xfce.thunar-volman
     gimp inkscape
     libreoffice
-    keepassxc
+    keepassxc picom
     glances iotop
     wireshark nmap
     virtualbox
     i3 i3status i3lock dmenu rofi feh dunst
   ];
 
+
   # Program Configurations
   programs = {
     neovim.enable = true;
-    chromium.enable = true;
     git.enable = true;
-    tmux.enable = true;
-    zsh = {
+    git.lfs.enable = true;
+    git.config = {
+        user.name = "jaarabytes";
+        user.email = "xavierandole78@gmail.com";
+   };
+   chromium.enable = true;
+   tmux.enable = true;
+   zsh = {
       enable = true;
       ohMyZsh.enable = true;
     };
@@ -118,7 +126,7 @@
   # Environment Variables
   environment.sessionVariables = {
     NODE_PATH = "${pkgs.nodejs}/lib/node_modules";
-    PYTHONPATH = "${pkgs.python311}/lib/python3.11/site-packages";
+    # PYTHONPATH = "${pkgs.python3}/lib/python3.11/site-packages";
     GOPATH = "$HOME/go";
     RUST_SRC_PATH = "${pkgs.rustc}/lib/rustlib/src/rust/src";
     EDITOR = "nvim";
@@ -126,16 +134,17 @@
 
   # Services
   services = {
-    openssh.enable = true;
-    ollama.enable = true;
-    mysql.enable = true;
+   gnome.gnome-keyring.enable = true;
+   openssh.enable = true;
+   ollama.enable = true;
+   mysql.enable = true;
    mysql.package = pkgs.mysql;
    flatpak.enable = true;
-    # Enable if you want to use Docker
-    # docker.enable = true;
-    # services.gvfs.enable = true;
-    # services.tumbler.enable = true;
+   gvfs.enable = true;
+   tumbler.enable = true;
   };
+  # I hate it but meh, why not
+  virtualisation.docker.enable = true;
 
   # Fonts
   fonts.packages = with pkgs; [
