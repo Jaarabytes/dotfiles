@@ -73,6 +73,6 @@ function ovpnConnect() {
   done
 }
 
-evadeThem()
-wireguardConnect()
-ovpnConnect()
+evadeThem
+wireguardConnect
+ovpnConnect

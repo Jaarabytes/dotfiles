@@ -1,9 +1,10 @@
 # i3 config file (v4)
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
-set $mod Mod4
-
 # Set default applications
+set $mod Mod4
+set $other_terminal alacritty
+set $other_browser chromium
 set $terminal kitty
 set $browser firefox
 set $menu rofi -show drun
@@ -14,17 +15,14 @@ font pango:DejaVu Sans Mono 8
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
 
-# Start a terminal
 bindsym $mod+T exec $terminal
-
-# Start preferred browser
+bindsym $mod+Shift+T exec $other_terminal
 bindsym $mod+P exec $browser
-
-# Kill focused window
+bindsym $mod+C exec $other_browser
 bindsym $mod+q kill
-
-# Start program launcher
 bindsym $mod+i exec $menu
+bindsym $mod+a exec audacious
+bindsym $mod+w exec "pgrep polybar || polybar -r"
 
 # Change focus
 bindsym $mod+Left focus left
@@ -107,16 +105,14 @@ bar {
 }
 
 # Gaps
-gaps inner 6
-gaps outer 10
+gaps inner 2
+gaps outer 2
 
 # Window border
 default_border pixel 2
 client.focused #cba6f7 #cba6f7 #ffffff #cba6f7 #cba6f7
 
 # Autostart applications
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec --no-startup-id nm-applet
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id gnome-keyring-daemon --start --components=secrets
 exec --no-startup-id dunst
@@ -133,8 +129,8 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 # Screenshot
 bindsym Print exec --no-startup-id maim ~/Pictures/Screenshots/"Screenshot_"$(date +'%Y%m%d_%H%M%S').png
-bindsym Shift+Print exec --no-startup-id maim -s ~/Pictures/Screenshots/$(date +'%Y-%m-%d_%H-%M-%S').png
-bindsym $mod+Print exec --no-startup-id maim -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +'%Y-%m-%d_%H-%M-%S').png
+bindsym Shift+Print exec --no-startup-id maim -s ~/Pictures/Screenshots/"Screenshot "$(date +'%Y%m%d_%H%M%S').png
+bindsym $mod+Print exec --no-startup-id maim -i $(xdotool getactivewindow) ~/Pictures/Screenshots/"Screenshot "$(date +'%Y%m%d_%H%M%S').png
 
 # Lock screen
 bindsym $mod+Shift+x exec --no-startup-id i3lock -c 000000
@@ -145,7 +141,7 @@ for_window [class="nm-connection-editor"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 
 # Workspace assignments
-assign [class="firefox"] 2
+# assign [class="firefox"] 2
 
 # Additional i3-specific features
 # Scratchpad
@@ -165,10 +161,13 @@ bindsym $mod+u [urgent=latest] focus
 workspace_auto_back_and_forth yes
 
 # Use a different wallpaper
-exec_always --no-startup-id feh --randomize --bg-fill ~/void/wal-main/
+exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/default.jpg
 
 # Enable compton (or picom) for transparency and animations
 exec_always --no-startup-id picom -b
+
+exec_always --no-startup-id polybar
+exec_always --no-startup-id autotiling
 
 # Disable touch screen for laptop
 exec_always --no-startup-id xinput disable 9

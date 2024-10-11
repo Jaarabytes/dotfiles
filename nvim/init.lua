@@ -56,6 +56,7 @@ require("lazy").setup({
  { "morhetz/gruvbox", name = "gruvbox"},
  { "folke/tokyonight.nvim", name = "tokyonight"},
  { "arcticicestudio/nord-vim", name = "nord-vim"},
+ { "scottmckendry/cyberdream.nvim", name = "cyberdream"},
     -- File explorer
   {
     "nvim-tree/nvim-tree.lua",
@@ -64,7 +65,7 @@ require("lazy").setup({
 })
 
 -- List of color schemes
-local colorschemes = {"gruvbox", "nord", "tokyonight", "catppuccin", "rose-pine"}
+local colorschemes = {"gruvbox", "nord", "tokyonight", "catppuccin", "rose-pine", "cyberdream"}
 
 -- Sets a random color scheme
 local function random_colorscheme()
@@ -110,6 +111,20 @@ end
 -- Autocompletion Setup
 local cmp = require('cmp')
 local luasnip = require('luasnip')
+
+-- Add specific configuration for clangd
+lspconfig.clangd.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--suggest-missing-includes",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
+  },
+  filetypes = {"c", "cpp", "objc", "objcpp"},
+}
 
 cmp.setup({
   snippet = {

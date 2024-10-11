@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 LOW_BATTERY_THRESHOLD=25
 FULL_BATTERY_THRESHOLD=100
@@ -10,12 +10,12 @@ while true; do
 
     if [ "$STATUS" == "Discharging" ] && [ "$BATTERY_LEVEL" -le "$LOW_BATTERY_THRESHOLD" ]; then
         # Send a notification
-        notify-send --urgency=critical "Low Battery" "Battery level is at ${BATTERY_LEVEL}%"
+        dunstify --urgency=critical "Low Battery" "Battery level is at ${BATTERY_LEVEL}%"
     fi
 
     if [ "$STATUS" == "Charging" ] && [ "$BATTERY_LEVEL" -eq "$FULL_BATTERY_THRESHOLD" ]; then
         # Send a notification
-        notify-send "Charging complete" "Battery level is at ${BATTERY_LEVEL}%"
+        dunstify "Charging complete" "Battery level is at ${BATTERY_LEVEL}%"
     fi
 
     # Wait 5 minutes before checking again
