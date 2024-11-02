@@ -3,7 +3,7 @@
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 # Set default applications
 set $mod Mod4
-set $other_terminal alacritty
+set $other_terminal wezterm
 set $other_browser chromium
 set $terminal kitty
 set $browser firefox
@@ -50,6 +50,8 @@ bindsym $mod+Shift+space floating toggle
 
 # Change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
+set $workspace_transition_duration 300
+set $workspace_transition_easing cubic
 
 # Switch to workspace
 bindsym $mod+1 workspace 1
@@ -161,7 +163,7 @@ bindsym $mod+u [urgent=latest] focus
 workspace_auto_back_and_forth yes
 
 # Use a different wallpaper
-exec_always --no-startup-id feh --randomize --bg-fill ~/Downloads/default.jpg
+exec_always --no-startup-id feh --randomize --bg-fill /home/trafalgar/Videos/wallhaven-282ed9.jpg
 
 # Enable compton (or picom) for transparency and animations
 exec_always --no-startup-id picom -b
