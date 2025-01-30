@@ -70,7 +70,7 @@ function update_debian() {
   echo "++++++++++++++++++++"
 }
 
-pip=(jupyter numpy pandas matplotlib seaborn scikit-learn tensorflow keras torch torchvision torchaudio)
+pip=(numpy pandas pillow pip pyarrow matplotlib requests beatifulsoup4 scipy scikit-learn torch)
 
 echo "=================="
 read -p "Is your system Arch or Debian based? [a/D] " -n 1 -r 
