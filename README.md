@@ -7,7 +7,7 @@ Primarily I use **Nix OS** ~~arch linux~~, with hyprland but i3 is also great.
 Just:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Jaarabytes/dotfiles/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Jaarabytes/dotfiles/master/install.sh | bash
 ```
 
 ## Nix OS btw
