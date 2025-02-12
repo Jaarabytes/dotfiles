@@ -16,7 +16,9 @@ detect_package_manager() {
         echo "yay"
     elif command_exists pacman; then
         echo "pacman"
-    else
+    elif command_exists apt; then
+        echo "apt"
+   else
         echo "unknown"
     fi
 }
@@ -56,7 +58,17 @@ install_packages() {
                 fi
             done
             ;;
-        *)
+         apt)
+            for package in "${packages[@]}"; do
+                echo "Installing $package ..."
+                if sudo apt-get install -y "$package"; then
+                    echo "Successfully installed $package"
+                else
+                    echo "Error installing $package"
+                fi
+            done
+            ;;
+       *)
             echo "Error: Unsupported package manager. Cannot install packages."
             exit 1
             ;;
@@ -112,7 +124,7 @@ rice() {
     cd dotfiles
     echo "Starting desktop ricing process..."
 
-    install_zsh
+
 
     # Backup existing configurations
     echo "Backing up existing configurations..."
@@ -122,7 +134,7 @@ rice() {
     sudo cp -r /etc/nixos/* "$backup_dir" 2>/dev/null
     echo "Backup created at $backup_dir"
 
-    for script in sh/start.sh sh/machine-learning.sh; do
+    for script in sh/start.sh sh/machine_learning.sh; do
         if [ -f "$script" ]; then
             echo "Running $script..."
             bash "$script"
@@ -133,6 +145,7 @@ rice() {
 
     packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland"  "waybar" "swaybg" "wofi" "wlogout" "mako" "thunar" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "xdg-desktop-portal-hyprland")
     install_packages "${packages[@]}"
+    install_zsh
 
     copy_configs
 

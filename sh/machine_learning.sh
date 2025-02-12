@@ -3,17 +3,22 @@
 # Installs everything required for machine learning for either Arch-based or Debian-based systems
 
 function install_pip() {
-  local pip=("$@")
-  for package in "${pip[@]}"; do
-    echo "Installing $package"
-    if sudo pacman -Sy python-"$package"; then
-      echo "Successfully installed $package"
+  local packages=("$@")  # More descriptive name than "pip"
+  for package in "${packages[@]}"; do
+    echo "Attempting to install $package via apt..."
+    if sudo apt install -y "python3-${package}"; then
+      echo "Successfully installed python3-$package via apt."
     else
-      echo "Error installing $package"
-    fi  
+      echo "Apt install failed. Trying pip3..."
+      if sudo pip3 install --break-system-packages "$package"; then
+        echo "Successfully installed $package via pip3."
+      else
+        echo "Error: Failed to install $package via both apt and pip3."
+        return 1  # Exit with error code
+      fi
+    fi
   done
 }
-
 function update_arch() {
   echo "================"
   echo "Updating system"
@@ -70,7 +75,7 @@ function update_debian() {
   echo "++++++++++++++++++++"
 }
 
-pip=(numpy pandas pillow pip pyarrow matplotlib requests beatifulsoup4 scipy scikit-learn torch)
+pip=(numpy pandas pillow pip pyarrow matplotlib requests beautifulsoup4 scipy scikit-learn torch scapy cryptography pwntools requests-oauthlib pyOpenSSL paramiko python-nmap impacket dnspython sqlmap-python mechanize shodan virtualenv bandit pyjwt)
 
 echo "=================="
 read -p "Is your system Arch or Debian based? [a/D] " -n 1 -r 

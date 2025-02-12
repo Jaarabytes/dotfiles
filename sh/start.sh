@@ -68,7 +68,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   if [[ $OS == *"Arch"* || $OS == *"Manjaro"* ]]; then
     sudo pacman -Syu --noconfirm && sudo pacman -Sc --noconfirm
     echo "Updated Arch-based system"
-  elif [[ $OS == *"Ubuntu"* || $OS == *"Debian"* || $OS == *"Linux Mint"* ]]; then
+  elif [[ $OS == *"Ubuntu"* || $OS == *"Debian"* || $OS == *"Parrot"* ]]; then
     sudo apt update -y && sudo apt upgrade -y
     echo "Updated Debian-based system"
   else
