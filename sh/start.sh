@@ -40,17 +40,17 @@ function install_npm_packages() {
 }
 
 # Function to install snap packages
-# function install_snap_packages() {
-#  local packages=("$@")
-#  for package in "${packages[@]}"; do
-#    echo "Installing $package..."
-#    if sudo snap install "$package"; then
-#      echo "Successfully installed $package"
-#    else
-#      echo "Error installing $package"
-#    fi
-#  done
-#}
+function install_snap_packages() {
+ local packages=("$@")
+ for package in "${packages[@]}"; do
+   echo "Installing $package..."
+   if sudo snap install "$package"; then
+     echo "Successfully installed $package"
+   else
+     echo "Error installing $package"
+   fi
+ done
+}
 
 # Detect the distribution type
 if [ -f /etc/os-release ]; then

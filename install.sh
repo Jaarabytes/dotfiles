@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Author: Jaarabytes
-# NOTE: This configuration only supports arch linux or nixos. 
+# NOTE: This configuration only supports arch linux, nixos and Ubuntu/debian
 # I will add support for fedora, if i a second PC.
 
 
@@ -95,8 +95,11 @@ copy_configs() {
 
 install_zsh(){
   echo "Installing oh my zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  echo "Installed oh-my-zsh..."
+  if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; then
+    echo "Installed oh-my-zsh..."
+  else
+    echo "Failed to installed oh-my-zsh"
+  fi
 
   custom_zshrc="./.zshrc"
 
@@ -117,6 +120,67 @@ install_zsh(){
   fi
 }
 
+check_nvim() {
+  # Check if nvim is installed
+  if ! command_exists nvim ; then
+    echo "Neovim is not installed. Installing..."
+    if sudo snap install nvim --classic; then
+      echo "Neovim installed successfully via snap."
+    else
+      echo "Failed to install Neovim via snap. Aborting."
+      return 1
+    fi
+  fi
+
+  # Check Neovim version
+  nvim_version=$(nvim --version 2>&1 | grep -oE 'v[0-9.]+' | head -n 1) # Extract version
+  if [[ -z "$nvim_version" ]]; then
+    echo "Could not determine Neovim version. Aborting."
+    return 1
+  fi
+
+  echo "Neovim version: $nvim_version"
+
+  # Compare versions (using version comparison if available)
+  if command -v version >/dev/null 2>&1; then # Check if 'version' command exists
+    if version "$nvim_version" ge 0.8; then # Use version command for comparison
+      echo "Neovim is version 0.8 or higher. Proceeding..."
+    else
+      echo "Neovim is less than version 0.8. Upgrading..."
+      if sudo snap refresh nvim --classic; then # Attempt upgrade first
+        echo "Neovim upgraded successfully via snap."
+      else
+         echo "Neovim upgrade failed. Removing and reinstalling."
+         sudo snap remove nvim
+         if sudo snap install nvim --classic; then
+            echo "Neovim reinstalled successfully via snap."
+         else
+            echo "Failed to install Neovim via snap. Aborting."
+            return 1
+         fi
+      fi
+    fi
+  else # if the version command doesn't exist, fallback to string comparison
+    if [[ "$nvim_version" >= "v0.8" ]]; then  # String comparison (less reliable)
+      echo "Neovim is version 0.8 or higher. Proceeding..."
+    else
+      echo "Neovim is less than version 0.8. Upgrading..."
+      if sudo snap refresh nvim --classic; then # Attempt upgrade first
+        echo "Neovim upgraded successfully via snap."
+      else
+         echo "Neovim upgrade failed. Removing and reinstalling."
+         sudo snap remove nvim
+         if sudo snap install nvim --classic; then
+            echo "Neovim reinstalled successfully via snap."
+         else
+            echo "Failed to install Neovim via snap. Aborting."
+            return 1
+         fi
+      fi
+    fi
+  fi
+}
+
 
 rice() {
     echo "Cloning the repository"
@@ -124,17 +188,25 @@ rice() {
     cd dotfiles
     echo "Starting desktop ricing process..."
 
-
-
     # Backup existing configurations
     echo "Backing up existing configurations..."
     backup_dir="$HOME/config_backup_$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$backup_dir"
     cp -r ~/.config/* "$backup_dir" 2>/dev/null
-    sudo cp -r /etc/nixos/* "$backup_dir" 2>/dev/null
+    if [[ detect_package_manager -eq "nix" ]]; then 
+      sudo cp -r /etc/nixos/* "$backup_dir" 2>/dev/null
+    fi
     echo "Backup created at $backup_dir"
 
-    for script in sh/start.sh sh/machine_learning.sh; do
+
+    packages=("i3" "nodejs" "npm" "snap" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland"  "waybar" "swaybg" "wofi" "wlogout" "mako" "thunar" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "xdg-desktop-portal-hyprland")
+    install_packages "${packages[@]}"
+    install_zsh
+
+    copy_configs
+
+    echo "Desktop ricing completed."
+    for script in sh/start.sh; do
         if [ -f "$script" ]; then
             echo "Running $script..."
             bash "$script"
@@ -143,13 +215,6 @@ rice() {
         fi
     done
 
-    packages=("i3" "rofi" "fish" "zsh" "polybar" "dunst" "alacritty" "kitty" "maim" "neovim" "swaylock" "jq" "maim" "grim" "hyprland"  "waybar" "swaybg" "wofi" "wlogout" "mako" "thunar" "starship" "swappy" "slurp" "pamixer" "brightnessctl" "gvfs" "bluez" "bluez-utils" "lxappearance" "xdg-desktop-portal-hyprland")
-    install_packages "${packages[@]}"
-    install_zsh
-
-    copy_configs
-
-    echo "Desktop ricing completed."
     echo "You can start your session using i3 or Hyprland now."
     echo "Rofi should be accessed using super+I or windows-super-key+I"
 }
