@@ -80,7 +80,7 @@ random_colorscheme()
 -- LSP Configuration
 require('mason').setup()
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
+  ensure_installed = {'ts_ls', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
 })
 
 local lspconfig = require('lspconfig')
@@ -100,7 +100,7 @@ end
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
-local servers = {'tsserver', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
+local servers = {'ts_ls', 'svelte', 'lua_ls', 'pyright', 'gopls', 'clangd'}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
