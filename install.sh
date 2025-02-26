@@ -161,7 +161,7 @@ check_nvim() {
       fi
     fi
   else # if the version command doesn't exist, fallback to string comparison
-    if [[ "$nvim_version" >= "v0.8" ]]; then  # String comparison (less reliable)
+    if [[ "$nvim_version" -gt "v0.8" ]]; then  # String comparison (less reliable)
       echo "Neovim is version 0.8 or higher. Proceeding..."
     else
       echo "Neovim is less than version 0.8. Upgrading..."
