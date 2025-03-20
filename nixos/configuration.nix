@@ -119,62 +119,6 @@
         user.email = "xavierandole78@gmail.com";
    };
    chromium.enable = true;
-   tmux = {
-        enable = true;
-        plugins = with pkgs.tmuxPlugins; [
-            sensible
-            vim-tmux-navigator
-            yank
-        ];
-        terminal = "screen-256color";
-        extraConfig = ''
-        # Set the default shell to zsh
-	set-option -g default-shell /run/current-system/sw/bin/zsh
-
-	# Use Ctrl+Space as the prefix key instead of Ctrl+b
-	unbind C-b
-	set-option -g prefix C-Space
-	bind-key C-Space send-prefix
-
-	# Start window numbering at 1
-	set -g base-index 1
-
-	# Set easier window split keys (remove duplicate key bindings)
-	bind-key v split-window -h
-	bind-key h split-window -v
-
-	# Use Alt-arrow keys to switch panes
-	bind -n M-Left select-pane -L
-	bind -n M-Right select-pane -R
-	bind -n M-Up select-pane -U
-	bind -n M-Down select-pane -D
-
-	# Use Shift-arrow keys to switch windows
-	bind -n S-Left previous-window
-	bind -n S-Right next-window
-
-	# Enable mouse mode
-	setw -g mouse on
-
-	# Easy config reload
-	bind-key r source-file ~/.tmux.conf \; display-message "tmux.conf reloaded."
-
-	# Set the default terminal mode to 256color
-	set -g default-terminal "screen-256color"
-
-	# Enable vi mode keys
-	setw -g mode-keys vi
-
-	# Increase scrollback buffer size
-	set -g history-limit 10000
-
-	# Set status bar appearance
-	set -g status-bg black
-	set -g status-fg white
-	set -g status-left ""
-	set -g status-right "#[fg=green]#H"
-        '';
-   };
    zsh = {
       enable = true;
       ohMyZsh.enable = true;
